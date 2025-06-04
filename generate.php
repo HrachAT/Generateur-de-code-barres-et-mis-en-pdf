@@ -64,7 +64,10 @@ foreach ($articles as $index => $article) {
 
     // Titre de l’article
     $pdf->SetXY($x + 2, $y + 2);
-    $pdf->Cell(60, 5, $article['nom'], 0, 1);
+    $pdf->Cell(60, 5, $article['nom'], 0, 1, 'C');
+    //Affichage de l'EAN au dessus le code barre
+    $pdf->SetX($x + 2);
+    $pdf->Cell(60, 5, $article['code'], 0, 1, 'C');
 
     // Générer le code-barres PNG
     $barcode = $generator->getBarcode($article['code'], $generator::TYPE_EAN_13, 2, 40);
@@ -74,6 +77,10 @@ foreach ($articles as $index => $article) {
     // Afficher le code-barres
     $pdf->Image($tmp, $x + 7, $y + 10, 50, 20);
     unlink($tmp);
+    
+    //Affichage de l'EAN sous le code barre
+    //$pdf->SetX($x + 2);
+    //$pdf->Cell(60, 5, $article['code'], 0, 1, 'C');
 }
 
 $pdf->Output('I', 'etiquettes.pdf');
